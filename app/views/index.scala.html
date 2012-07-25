@@ -1,7 +1,77 @@
-@(message: String)
+@()(implicit flash: Flash)
 
-@main("Welcome to Play 2.0") {
-    
-    @play20.welcome(message)
-    
+@import helper._
+@import helper.twitterBootstrap._
+
+@import controllers._
+@import play.api.mvc._
+
+@main(){
+
+<h1>Play2 Server-sent events sample</h1>
+<button id="disconnect" href="#" class="btn btn-danger btn-small" disabled="disabled">Disconnect</button>
+
+<h3 id="status"></h3>
+
+<div class="resultBox">
+    <h3>Airfare price</h3>
+    <span id="resultAirfare"></span>
+</div>
+<div class="resultBox">
+    <h3>Hotel price</h3>
+    <span id="resultHotel"></span>
+
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    var feed;
+    if (!!window.EventSource) {
+        feed = new EventSource('/pool/test');
+
+        // Connection was opened.
+        feed.addEventListener('open', function (e) {
+            $("#status").html("Connection open");
+            $("#disconnect").removeAttr("disabled");
+        }, false);
+
+        feed.addEventListener('airfare', function(e) {
+          var data = JSON.parse(e.data);
+            $("#status").html("Airfare price received");
+            $("#resultAirfare").html(data.price);
+        }, false);
+
+        feed.addEventListener('hotel', function(e) {
+          var data = JSON.parse(e.data);
+            $("#status").html("Hotel price received");
+            $("#resultHotel").html(data.price);
+        }, false);
+
+        feed.addEventListener('error', function (e) {
+            if (e.readyState == EventSource.CLOSED) {
+                $("#status").html("Connection closed");
+                $("#disconnect").attr("disabled", "disabled");
+            } else {
+                $("#status").html("Unknown error" + e);
+                $("#disconnect").attr("disabled", "disabled");
+            }
+        }, false);
+
+    } else {
+        $("#status").html("Serverside Send Event not supported by this browser");
+    }
+
+    $(document).ready(function () {
+        $("#disconnect").attr("disabled", "disabled");
+    });
+
+    $("#disconnect").click(function(e){
+        e.preventDefault();
+       feed.close();
+       $("#status").html("Disconnected");
+        $("#disconnect").attr("disabled", "disabled");
+    });
+
+</script>
+
+
 }
