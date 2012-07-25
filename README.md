@@ -14,7 +14,7 @@ The application has been tested successfully with Play 2.0.3-RC2, with Safari an
 For more details about Server sent events, read this blog article :
 http://www.html5rocks.com/en/tutorials/eventsource/basics/
 
-Thanks to Sadek Drobi (CTO at Zenexity) for its help.
+Thanks to Sadek Drobi (CTO at Zenexity) for its help. This sample is similar to https://gist.github.com/3072893.
 
 Nicolas
 @nmartignole
