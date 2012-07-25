@@ -74,17 +74,23 @@ object Streams {
       ).map {
         content =>
           content.status match {
-            case 200 => play.Logger.info("airfareEDreams"); Some(content.body)
+            case 200 => Some(content.body)
             case error: Int => Some("Error " + error)
           }
       }
     }
   }
 
+  // TODO See how we can use Enumeratee and Iteratee to filter the HTML content...
   val filterPrice: Enumeratee[String, ZapEvent] = Enumeratee.map[String] {
     content =>
-      play.Logger.info("FilterPrice> " +StringUtils.abbreviate(content,30))
-      AirfareMessage("12345678.99 EUR")
+      val tableHTML = content.substring(content.indexOf("<div class=\"singleItinerayPrice defaultWhiteText centerAlign\" style='font-size:24px;'>"), content.indexOf("<label id=\"desgloseLabel0"))
+//      play.Logger.info("--------------------------------------")
+//      play.Logger.info("Streams " + tableHTML)
+//      play.Logger.info("--------------------------------------")
+      val clean1=tableHTML.replaceAll("<div class=\"singleItinerayPrice defaultWhiteText centerAlign\" style='font-size:24px;'>","").replaceAll(" ","").replaceAll("\n","")
+      val clean2=clean1.substring(0,clean1.indexOf("</div>"))
+      AirfareMessage(clean2)
   }
 
 
@@ -93,11 +99,11 @@ object Streams {
   // See also http://dev.w3.org/html5/eventsource/
   val asJson: Enumeratee[ZapEvent, JsValue] = Enumeratee.map[ZapEvent] {
     zapEvent =>
-      play.Logger.info("asJson> "+zapEvent)
+      play.Logger.info("asJson> " + zapEvent)
       toJson(Map("event" -> toJson(zapEvent.event), "price" -> toJson(zapEvent.price)))
   }
 
-  val events:Enumerator[ZapEvent]= {
+  val events: Enumerator[ZapEvent] = {
     airfareEDreams.&>(filterPrice)
   }
 
