@@ -1,0 +1,6 @@
+Play 2.0.3 sample to demonstrate Play2 Server side streaming API, with EventSource if your browser has support for it.
+
+Thanks to Sadek Drobi (@Sadache), CTO at Zenexity, for its help.
+
+Nicolas Martignole
+
