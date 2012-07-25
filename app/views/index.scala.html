@@ -46,6 +46,12 @@
             $("#resultHotel").html(data.price);
         }, false);
 
+        feed.addEventListener('message', function(e) {
+          var data = JSON.parse(e.data);
+            $("#status").html("Generic message received");
+            console.log(e.data);
+        }, false);
+
         feed.addEventListener('error', function (e) {
             if (e.readyState == EventSource.CLOSED) {
                 $("#status").html("Connection closed");
@@ -72,6 +78,5 @@
     });
 
 </script>
-
 
 }
