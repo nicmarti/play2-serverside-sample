@@ -104,7 +104,7 @@ object Streams {
   }
 
   val events: Enumerator[ZapEvent] = {
-    airfareEDreams.&>(filterPrice)
+    airfareEDreams.&>(filterPrice) >- hotelStream
   }
 
 }
