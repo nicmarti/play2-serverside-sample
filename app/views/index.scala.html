@@ -9,18 +9,24 @@
 @main(){
 
 <h1>Play2 Server-sent events sample</h1>
+
+<p>This is a very simple Play2 application to demonstrate Play2 Enumerator/Enumeratee with Server sent event.
+   The source code is on <a href="https://github.com/nicmarti/play2-serverside-sample">Github</a> and if you read French, I also
+    wrote a full article with much more details on <a href="http://www.touilleur-express.fr/2012/08/05/realtime-web-application-un-exemple-avec-play2/">Touilleur Express</a>.<br/>
+    Nicolas Martignole
+</p>
+
 <button id="disconnect" href="#" class="btn btn-danger btn-small" disabled="disabled">Disconnect</button>
 
 <h3 id="status"></h3>
 
 <div class="resultBox">
     <h3>Airfare price</h3>
-    <span id="resultAirfare"></span>
+    <span id="resultAirfare">Contacting eDreams...</span>
 </div>
 <div class="resultBox">
     <h3>Hotel price</h3>
     <span id="resultHotel"></span>
-
 </div>
 
 <script type="text/javascript" charset="utf-8">
